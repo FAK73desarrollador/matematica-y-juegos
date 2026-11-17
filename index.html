@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAK73 Apps educativas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Idea: hoja de carpeta cuadriculada con margen azul; naranja para lo importante. Modo oscuro: azul noche como Hagamos Ecuaciones. */
+:root{
+  --paper:#fbfcfe;
+  --grid:#dfe7f3;
+  --ink:#1f2a44;
+  --muted:#5a6680;
+  --accent:#c85a06;
+  --on-accent:#ffffff;
+  --margin:#3f73d6;
+  --chip:#fff1e3;
+  --card:#ffffff;
+  --line:#e6d9cc;
+  --display:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141a33; --grid:#1c2445; --ink:#f1f2f8; --muted:#aab0cc;
+    --accent:#ff9a3c; --on-accent:#1a1205; --margin:#5b8cff; --chip:#2a2440; --card:#1b2242; --line:#323b62;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141a33; --grid:#1c2445; --ink:#f1f2f8; --muted:#aab0cc;
+  --accent:#ff9a3c; --on-accent:#1a1205; --margin:#5b8cff; --chip:#2a2440; --card:#1b2242; --line:#323b62;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink);
+  font:17px/1.6 var(--body);
+}
+a{color:var(--accent)}
+a:focus-visible, button:focus-visible{outline:3px solid var(--margin); outline-offset:2px; border-radius:4px}
+.sheet{
+  max-width:1040px; margin:0 auto; padding:0 20px 48px 20px;
+  border-left:2px solid var(--margin);
+}
+header{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
+  padding:20px 0 12px;
+}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink)}
+.brand b{font:800 28px/1 var(--display); letter-spacing:.5px}
+.brand span{color:var(--muted); font-size:15px}
+nav{display:flex; flex-wrap:wrap; gap:6px}
+nav a{
+  text-decoration:none; color:var(--ink); padding:6px 12px; border-radius:999px;
+  border:1px solid var(--line); background:var(--card); font-weight:700; font-size:15px;
+}
+nav a[aria-current="page"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+h1,h2,h3{font-family:var(--display); line-height:1.15; text-wrap:balance; margin:0}
+h1{font-size:clamp(34px,5vw,50px); font-weight:800}
+h2{font-size:30px; font-weight:800}
+h3{font-size:22px; font-weight:600}
+.intro{padding:28px 0 20px; max-width:62ch}
+.intro p{color:var(--muted); font-size:19px; margin:12px 0 0}
+.apps{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px}
+.app{
+  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px;
+  display:flex; flex-direction:column; gap:14px;
+}
+.app-head{display:flex; gap:14px; align-items:center}
+.app-head svg{flex:none; width:68px; height:68px}
+.status{
+  display:inline-block; font-size:13px; font-weight:700; padding:2px 10px; border-radius:999px;
+  background:var(--chip); color:var(--accent);
+}
+.status.soon{color:var(--margin)}
+.app ul{margin:0; padding-left:20px}
+.app li{margin:2px 0}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tags span{font-size:14px; background:var(--chip); padding:2px 10px; border-radius:6px}
+.btn{
+  display:inline-block; text-decoration:none; font-weight:700; text-align:center;
+  background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:10px; border:0;
+  margin-top:auto; font-size:16px; cursor:pointer; font-family:var(--body);
+}
+.btn.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent)}
+.app-icon{width:68px; height:68px; border-radius:16px; flex:none; box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.shots{display:flex; gap:12px; overflow-x:auto; padding:4px 2px 10px; scroll-snap-type:x mandatory}
+.shots figure{margin:0; flex:none; width:150px; scroll-snap-align:start}
+.shots img{width:100%; height:auto; display:block; border-radius:12px; border:1px solid var(--line)}
+.shots figcaption{font-size:13px; color:var(--muted); margin-top:4px; text-align:center}
+.note{
+  margin-top:28px; padding:14px 18px; border-left:4px solid var(--accent);
+  background:var(--card); border-radius:0 10px 10px 0; max-width:70ch;
+}
+section[hidden]{display:none}
+.page{padding-top:24px; display:flex; flex-direction:column; gap:20px}
+.prose{max-width:68ch}
+.prose p, .prose li{margin:8px 0}
+.prose h3{margin-top:26px}
+.levels{
+  width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line);
+  border-radius:10px; overflow:hidden; font-variant-numeric:tabular-nums;
+}
+.table-wrap{overflow-x:auto}
+.levels th,.levels td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line)}
+.levels th{background:var(--chip); font-family:var(--display); font-weight:600}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px}
+.box{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px}
+form{display:flex; flex-direction:column; gap:12px}
+label{font-weight:700; font-size:15px}
+input,select,textarea{
+  width:100%; font:16px var(--body); color:var(--ink); background:var(--paper);
+  border:1px solid var(--line); border-radius:8px; padding:9px 11px;
+}
+textarea{min-height:120px; resize:vertical}
+.out{display:none; white-space:pre-wrap; background:var(--chip); padding:12px; border-radius:8px; font-size:15px}
+.out.show{display:block}
+.draft{
+  border:2px dashed var(--margin); color:var(--margin); padding:10px 14px; border-radius:10px;
+  font-weight:700; font-size:15px; max-width:68ch;
+}
+footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:space-between}
+@media (max-width:420px){ .sheet{border-left:0} body{font-size:16px} }
+@media (prefers-reduced-motion: no-preference){ .btn{transition:transform .15s} .btn:hover{transform:translateY(-1px)} }
+</style>
+</head>
+<body>
+<div class="sheet">
+<header>
+  <a class="brand" href="#inicio">
+    <svg width="92" height="40" viewBox="0 0 92 40" aria-hidden="true"><text x="2" y="31" font-family="Baloo 2, sans-serif" font-weight="800" font-size="30" fill="#f29a1f" stroke="#c85a06" stroke-width="1">FAK</text><circle cx="73" cy="20" r="15" fill="#fff" stroke="#1f6fe0" stroke-width="3"/><text x="73" y="26" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="16" fill="#1f6fe0">73</text></svg>
+    <span>apps para aprender matemática</span>
+  </a>
+  <nav aria-label="Secciones">
+    <a href="#inicio">Apps</a>
+    <a href="#docentes">Docentes</a>
+    <a href="#soporte">Soporte</a>
+    <a href="privacidad.html">Privacidad</a>
+  </nav>
+</header>
+
+<!-- INICIO -->
+<section id="v-inicio" data-view="inicio">
+  <div class="intro">
+    <h1>Matemática para practicar jugando</h1>
+    <p>Apps para Android pensadas desde el aula de secundaria. Cada una entrena un tema paso a paso: de las cuentas básicas a las ecuaciones de segundo grado.</p>
+  </div>
+  <div class="apps">
+    <article class="app">
+      <div class="app-head">
+        <img class="app-icon" src="img/icono-cuentas.png" alt="Ícono de Hagamos Cuentas">
+        <div><h3>¡¡¡Hagamos Cuentas!!!</h3><span class="status">Disponible en Google Play</span></div>
+      </div>
+      <p>Práctica de cálculo en naturales (ℕ) y enteros (ℤ), sola o en grupo: suma y resta, multiplicación y división, potencias y raíces, y ejercicios combinados simples y complejos, de 1 a 5 términos.</p>
+      <ul>
+        <li><strong>Práctica individual:</strong> Entrenamiento y Modo Solitario, con los 5 mejores puntajes</li>
+        <li><strong>Desafío multijugador:</strong> Tanda de Penales, una carrera contra el tiempo</li>
+        <li><strong>Por equipos:</strong> Partida por Equipos y Quemados Matemáticos</li>
+      </ul>
+      <div class="shots" aria-label="Capturas de Hagamos Cuentas">
+        <figure><img src="img/cuentas-menu.jpg" alt="Menú principal con los modos de juego" loading="lazy"><figcaption>Menú</figcaption></figure>
+        <figure><img src="img/cuentas-config.jpg" alt="Configuración de partida en Modo Solitario" loading="lazy"><figcaption>Configurar partida</figcaption></figure>
+        <figure><img src="img/cuentas-penales.jpg" alt="Tanda de Penales: raíz de 64" loading="lazy"><figcaption>Tanda de Penales</figcaption></figure>
+      </div>
+      <div class="tags"><span>ℕ y ℤ</span><span>Individual</span><span>Multijugador</span><span>Equipos</span><span>13+</span></div>
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.fak1.hagamoscuentas">Ver en Google Play</a>
+    </article>
+
+    <article class="app">
+      <div class="app-head">
+        <img class="app-icon" src="img/icono-ecuaciones.png" alt="Ícono de Hagamos Ecuaciones">
+        <div><h3>¡¡Hagamos Ecuaciones!!</h3><span class="status soon">En prueba cerrada</span></div>
+      </div>
+      <p>Ecuaciones de primer y segundo grado. Empieza con la balanza, donde se ve el equilibrio, y llega al método simbólico, aceptando distintos caminos de resolución.</p>
+      <ul>
+        <li>24 niveles: 12 en naturales (ℕ) y 12 en enteros (ℤ)</li>
+        <li><strong>Entrenamiento:</strong> ¡Equilibra la Balanza!, Pasaje de Términos y Propiedad Distributiva</li>
+        <li><strong>Juegos:</strong> Las Torres del Entero, con un jefe final en el escalón 10, y ¡Corre, Mate, Corre!, donde cada tranquera se abre con una ecuación</li>
+      </ul>
+      <div class="shots" aria-label="Capturas de Hagamos Ecuaciones">
+        <figure><img src="img/ecuaciones-menu.jpg" alt="Menú principal con modos de entrenamiento y juegos" loading="lazy"><figcaption>Menú</figcaption></figure>
+        <figure><img src="img/ecuaciones-balanza.jpg" alt="Balanza: 17 = x + 10" loading="lazy"><figcaption>Balanza</figcaption></figure>
+        <figure><img src="img/ecuaciones-torres.jpg" alt="Las Torres del Entero, piso 24" loading="lazy"><figcaption>Torres del Entero</figcaption></figure>
+        <figure><img src="img/ecuaciones-sendero.jpg" alt="Sendero Aventura con tranquera x / 4 = 2" loading="lazy"><figcaption>¡Corre, Mate, Corre!</figcaption></figure>
+      </div>
+      <div class="tags"><span>1° y 2° grado</span><span>ℕ y ℤ</span><span>13+</span></div>
+      <a class="btn ghost" href="#soporte">Quiero probarla</a>
+    </article>
+  </div>
+  <p class="note"><strong>Hechas por un docente.</strong> FAK73 desarrolla estas apps desde la gestión escolar, con alumnos reales en la cabeza: expresiones matemáticas que se lean bien, errores que enseñan y progresos que se notan.</p>
+</section>
+
+<!-- DOCENTES -->
+<section id="v-docentes" data-view="docentes" class="page" hidden>
+  <h2>Recursos para docentes</h2>
+  <div class="prose">
+    <p>Las dos apps funcionan bien como práctica en clase, tarea o competencia entre grupos. Algunas ideas para sacarles provecho:</p>
+  </div>
+  <div class="grid2">
+    <div class="box">
+      <h3>Hagamos Cuentas en el aula</h3>
+      <ul>
+        <li><strong>Para arrancar la clase:</strong> 10 minutos de operaciones básicas como calentamiento.</li>
+        <li><strong>Para trabajar en grupo:</strong> Partida por Equipos o Quemados Matemáticos sirven para una competencia por filas o grupos.</li>
+        <li><strong>Para entusiasmar:</strong> la Tanda de Penales pone a prueba la velocidad de cálculo contra el reloj.</li>
+        <li><strong>Para repasar jerarquía:</strong> en Modo Solitario, elijan combinados con potencias y raíces y activen la dificultad progresiva.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Hagamos Ecuaciones en el aula</h3>
+      <ul>
+        <li><strong>Introducción:</strong> la Balanza muestra por qué se hace “lo mismo de los dos lados”.</li>
+        <li><strong>Formalización:</strong> Pasaje de términos sigue cuatro fases: colorear semejantes, trasladar cambiando la operación, reducir y despejar.</li>
+        <li><strong>Desafío:</strong> los modos de juego refuerzan sin que parezca ejercitación.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Correspondencia de niveles en Hagamos Ecuaciones</h3>
+  <p class="prose">Cada nivel en naturales tiene su par en enteros, doce niveles más adelante. Así se puede repetir el mismo contenido sumando los números negativos.</p>
+  <div class="table-wrap">
+    <table class="levels">
+      <thead><tr><th>En naturales (ℕ)</th><th>En enteros (ℤ)</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>Niveles 1 a 12</td><td>Niveles 13 a 24</td><td>Nivel N en ℕ = Nivel N + 12 en ℤ</td></tr>
+        <tr><td>Nivel 7: Distributiva</td><td>Nivel 19: Distributiva</td><td>mismo tema, con enteros</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">¿Usás las apps con tus cursos? Contanos cómo te fue desde la sección <a href="#soporte">Soporte</a>: las sugerencias de docentes orientan las próximas versiones.</p>
+</section>
+
+<!-- SOPORTE -->
+<section id="v-soporte" data-view="soporte" class="page" hidden>
+  <h2>Soporte y contacto</h2>
+  <div class="grid2">
+    <div class="box prose">
+      <h3>Escribinos</h3>
+      <p>Para informar un error, sugerir una mejora o pedir acceso a la prueba de Hagamos Ecuaciones, escribí a:</p>
+      <p><strong id="mail">fakdesarrollador@gmail.com</strong></p>
+      <p>Si encontrás un error, contanos qué app usabas, en qué modo y nivel estabas y qué pasó. Si podés, sumá una captura de pantalla.</p>
+    </div>
+    <div class="box">
+      <h3>Armá tu mensaje</h3>
+      <form id="f">
+        <div><label for="f-app">App</label>
+          <select id="f-app"><option>¡¡¡Hagamos Cuentas!!!</option><option>¡¡Hagamos Ecuaciones!!</option></select></div>
+        <div><label for="f-tipo">Motivo</label>
+          <select id="f-tipo"><option>Informar un error</option><option>Sugerencia</option><option>Quiero probar la app</option><option>Uso en el aula</option></select></div>
+        <div><label for="f-modo">Modo y nivel (si aplica)</label><input id="f-modo" placeholder="Ej.: Pasaje de términos, nivel 7"></div>
+        <div><label for="f-msg">Mensaje</label><textarea id="f-msg" placeholder="Qué pasó o qué te gustaría"></textarea></div>
+        <button class="btn" type="submit">Preparar mensaje</button>
+        <div id="f-out" class="out" aria-live="polite"></div>
+        <button id="f-copy" class="btn ghost" type="button" hidden>Copiar mensaje</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <span>© 2026 FAK73 · Hecho con ❤ en Argentina</span>
+  <span><a href="privacidad.html">Política de privacidad</a> · <a href="#soporte">Soporte</a></span>
+</footer>
+</div>
+
+<script>
+(function(){
+  var views=["inicio","docentes","soporte"];
+  function show(){
+    var h=(location.hash||"").replace("#","");
+    if(views.indexOf(h)<0) h="inicio";
+    views.forEach(function(v){
+      var el=document.getElementById("v-"+v);
+      if(el) el.hidden=(v!==h);
+    });
+    document.querySelectorAll("nav a").forEach(function(a){
+      if(a.getAttribute("href")==="#"+h) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+    });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener("hashchange",show);
+  show();
+
+  var f=document.getElementById("f"), out=document.getElementById("f-out"), copy=document.getElementById("f-copy");
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    var t="App: "+document.getElementById("f-app").value+
+      "\nMotivo: "+document.getElementById("f-tipo").value+
+      "\nModo y nivel: "+(document.getElementById("f-modo").value||"-")+
+      "\n\n"+(document.getElementById("f-msg").value||"");
+    out.textContent=t; out.classList.add("show"); copy.hidden=false;
+  });
+  copy.addEventListener("click",function(){
+    try{
+      navigator.clipboard.writeText(out.textContent).then(function(){copy.textContent="Copiado. Pegalo en tu correo";},function(){copy.textContent="Seleccioná el texto y copialo a mano";});
+    }catch(err){copy.textContent="Seleccioná el texto y copialo a mano";}
+  });
+})();
+</script>
+</body>
+</html>
