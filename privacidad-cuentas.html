@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacidad Hagamos Cuentas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Idea: hoja de carpeta cuadriculada con margen azul; naranja para lo importante. Modo oscuro: azul noche como Hagamos Ecuaciones. */
+:root{
+  --paper:#fbfcfe;
+  --grid:#dfe7f3;
+  --ink:#1f2a44;
+  --muted:#5a6680;
+  --accent:#c85a06;
+  --on-accent:#ffffff;
+  --margin:#3f73d6;
+  --chip:#fff1e3;
+  --card:#ffffff;
+  --line:#e6d9cc;
+  --display:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141a33; --grid:#1c2445; --ink:#f1f2f8; --muted:#aab0cc;
+    --accent:#ff9a3c; --on-accent:#1a1205; --margin:#5b8cff; --chip:#2a2440; --card:#1b2242; --line:#323b62;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141a33; --grid:#1c2445; --ink:#f1f2f8; --muted:#aab0cc;
+  --accent:#ff9a3c; --on-accent:#1a1205; --margin:#5b8cff; --chip:#2a2440; --card:#1b2242; --line:#323b62;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink);
+  font:17px/1.6 var(--body);
+}
+a{color:var(--accent)}
+a:focus-visible, button:focus-visible{outline:3px solid var(--margin); outline-offset:2px; border-radius:4px}
+.sheet{
+  max-width:1040px; margin:0 auto; padding:0 20px 48px 20px;
+  border-left:2px solid var(--margin);
+}
+header{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
+  padding:20px 0 12px;
+}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink)}
+.brand b{font:800 28px/1 var(--display); letter-spacing:.5px}
+.brand span{color:var(--muted); font-size:15px}
+nav{display:flex; flex-wrap:wrap; gap:6px}
+nav a{
+  text-decoration:none; color:var(--ink); padding:6px 12px; border-radius:999px;
+  border:1px solid var(--line); background:var(--card); font-weight:700; font-size:15px;
+}
+nav a[aria-current="page"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+h1,h2,h3{font-family:var(--display); line-height:1.15; text-wrap:balance; margin:0}
+h1{font-size:clamp(34px,5vw,50px); font-weight:800}
+h2{font-size:30px; font-weight:800}
+h3{font-size:22px; font-weight:600}
+.intro{padding:28px 0 20px; max-width:62ch}
+.intro p{color:var(--muted); font-size:19px; margin:12px 0 0}
+.apps{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px}
+.app{
+  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px;
+  display:flex; flex-direction:column; gap:14px;
+}
+.app-head{display:flex; gap:14px; align-items:center}
+.app-head svg{flex:none; width:68px; height:68px}
+.status{
+  display:inline-block; font-size:13px; font-weight:700; padding:2px 10px; border-radius:999px;
+  background:var(--chip); color:var(--accent);
+}
+.status.soon{color:var(--margin)}
+.app ul{margin:0; padding-left:20px}
+.app li{margin:2px 0}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tags span{font-size:14px; background:var(--chip); padding:2px 10px; border-radius:6px}
+.btn{
+  display:inline-block; text-decoration:none; font-weight:700; text-align:center;
+  background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:10px; border:0;
+  margin-top:auto; font-size:16px; cursor:pointer; font-family:var(--body);
+}
+.btn.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent)}
+.app-icon{width:68px; height:68px; border-radius:16px; flex:none; box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.shots{display:flex; gap:12px; overflow-x:auto; padding:4px 2px 10px; scroll-snap-type:x mandatory}
+.shots figure{margin:0; flex:none; width:150px; scroll-snap-align:start}
+.shots img{width:100%; height:auto; display:block; border-radius:12px; border:1px solid var(--line)}
+.shots figcaption{font-size:13px; color:var(--muted); margin-top:4px; text-align:center}
+.note{
+  margin-top:28px; padding:14px 18px; border-left:4px solid var(--accent);
+  background:var(--card); border-radius:0 10px 10px 0; max-width:70ch;
+}
+section[hidden]{display:none}
+.page{padding-top:24px; display:flex; flex-direction:column; gap:20px}
+.prose{max-width:68ch}
+.prose p, .prose li{margin:8px 0}
+.prose h3{margin-top:26px}
+.levels{
+  width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line);
+  border-radius:10px; overflow:hidden; font-variant-numeric:tabular-nums;
+}
+.table-wrap{overflow-x:auto}
+.levels th,.levels td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line)}
+.levels th{background:var(--chip); font-family:var(--display); font-weight:600}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px}
+.box{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px}
+form{display:flex; flex-direction:column; gap:12px}
+label{font-weight:700; font-size:15px}
+input,select,textarea{
+  width:100%; font:16px var(--body); color:var(--ink); background:var(--paper);
+  border:1px solid var(--line); border-radius:8px; padding:9px 11px;
+}
+textarea{min-height:120px; resize:vertical}
+.out{display:none; white-space:pre-wrap; background:var(--chip); padding:12px; border-radius:8px; font-size:15px}
+.out.show{display:block}
+.draft{
+  border:2px dashed var(--margin); color:var(--margin); padding:10px 14px; border-radius:10px;
+  font-weight:700; font-size:15px; max-width:68ch;
+}
+footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:space-between}
+@media (max-width:420px){ .sheet{border-left:0} body{font-size:16px} }
+@media (prefers-reduced-motion: no-preference){ .btn{transition:transform .15s} .btn:hover{transform:translateY(-1px)} }
+</style>
+</head>
+<body>
+<div class="sheet">
+<header>
+  <a class="brand" href="index.html">
+    <svg width="92" height="40" viewBox="0 0 92 40" aria-hidden="true"><text x="2" y="31" font-family="Baloo 2, sans-serif" font-weight="800" font-size="30" fill="#f29a1f" stroke="#c85a06" stroke-width="1">FAK</text><circle cx="73" cy="20" r="15" fill="#fff" stroke="#1f6fe0" stroke-width="3"/><text x="73" y="26" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="16" fill="#1f6fe0">73</text></svg>
+    <span>apps para aprender matemática</span>
+  </a>
+  <nav aria-label="Secciones">
+    <a href="index.html">Apps</a>
+    <a href="index.html#docentes">Docentes</a>
+    <a href="index.html#soporte">Soporte</a>
+    <a href="privacidad.html" aria-current="page">Privacidad</a>
+  </nav>
+</header>
+
+<section id="privacidad" class="page">
+  <h2>Política de privacidad: ¡¡¡Hagamos Cuentas!!!</h2>
+  <div class="prose">
+    <p><strong>Última actualización:</strong> 18/11/26</p>
+    <p>Esta política explica qué información trata la aplicación ¡¡¡Hagamos Cuentas!!! (la "Aplicación"), una app educativa para practicar cálculo (operaciones básicas, ejercicios combinados, potencias y raíces) en la escuela secundaria, desarrollada por FAK73 ("el Desarrollador", "Nosotros").</p>
+
+    <h3>1. Resumen</h3>
+    <ul>
+      <li>La Aplicación no tiene cuentas ni registro.</li>
+      <li>No tenemos servidores propios y no recibimos tus datos: lo que ingresás se guarda solo en tu dispositivo.</li>
+      <li>Actualmente la Aplicación no muestra anuncios ni usa servicios de terceros que recopilen datos.</li>
+    </ul>
+
+    <h3>2. Información que se guarda en tu dispositivo</h3>
+    <p>Para que la Aplicación funcione, se guarda en tu dispositivo: los nombres o apodos que se ingresen para los jugadores y equipos (por ejemplo, en Partida por Equipos, Tanda de Penales o Quemados Matemáticos), los puntajes, el progreso y las opciones de juego.</p>
+    <p>Esta información no se envía a Nosotros ni a nadie. Te recomendamos usar apodos o solo el nombre de pila, y no ingresar apellidos ni otros datos personales.</p>
+    <p>Puedes borrarla en cualquier momento desinstalando la Aplicación o usando "Borrar datos" en los ajustes de Android (Ajustes &gt; Aplicaciones &gt; ¡¡¡Hagamos Cuentas!!! &gt; Almacenamiento).</p>
+
+    <h3>3. Anuncios y servicios de terceros</h3>
+    <p>Actualmente la Aplicación no muestra anuncios ni incluye servicios de terceros (como analítica, anuncios o tablas de clasificación) que recopilen datos.</p>
+    <p>Si en una versión futura incorporamos anuncios (por ejemplo, de Google AdMob) o tablas de clasificación (por ejemplo, de Google Play Juegos), actualizaremos esta política antes de publicar esa versión, indicando qué datos recopilan esos servicios y cómo se usan.</p>
+
+    <h3>4. Información que no recopilamos</h3>
+    <p>No pedimos tu nombre completo, correo electrónico, teléfono, ubicación, contactos, fotos, cámara ni micrófono.</p>
+
+    <h3>5. Cómo usamos la información</h3>
+    <p>La información guardada en tu dispositivo se usa solo para que la Aplicación funcione: mostrar los jugadores y equipos, llevar los puntajes y recordar tus opciones.</p>
+
+    <h3>6. Con quién se comparte</h3>
+    <p>No vendemos ni compartimos tu información personal con nadie, salvo la información que la ley nos exija entregar a una autoridad.</p>
+
+    <h3>7. Conservación y eliminación</h3>
+    <p>Los datos de la sección 2 permanecen en tu dispositivo hasta que desinstales la Aplicación o borres sus datos. Si quieres hacernos una consulta sobre tu información, escríbenos al correo de contacto.</p>
+
+    <h3>8. Menores de edad</h3>
+    <p>La Aplicación está destinada a personas de 13 años o más. No recopilamos a sabiendas información personal de menores de 13 años. Si eres madre, padre o tutor y crees que un menor nos proporcionó información, escríbenos y te ayudaremos a eliminarla.</p>
+
+    <h3>9. Seguridad</h3>
+    <p>Procuramos proteger la información con medios razonables, pero ningún sistema es 100% seguro.</p>
+
+    <h3>10. Cambios en esta política</h3>
+    <p>Podemos actualizar esta política. Publicaremos la nueva versión en esta página y actualizaremos la fecha de "Última actualización".</p>
+
+    <h3>11. Contacto</h3>
+    <p>Si tienes preguntas sobre esta política, escríbenos a fakdesarrollador@gmail.com.</p>
+  </div>
+</section>
+<footer>
+  <span>© 2026 FAK73 · Hecho con ❤ en Argentina</span>
+  <span><a href="privacidad.html">Política de privacidad</a> · <a href="index.html#soporte">Soporte</a></span>
+</footer>
+</div>
+</body>
+</html>
